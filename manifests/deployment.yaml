@@ -16,6 +16,6 @@ spec:
       - name: artifact-registry-secret
       containers:
       - name: demo
-        image: nginx:latest
+        image: southamerica-east1-docker.pkg.dev/offshore-hub-foundations/offshore-hub-repo/python-app:latest
         ports:
         - containerPort: 80
