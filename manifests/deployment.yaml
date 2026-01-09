@@ -14,7 +14,7 @@ spec:
     spec:
       # Pull secret para Artifact Registry
       imagePullSecrets:
-      - name: artifact-registry-key
+      - name: artifact-registry-secret
       
       containers:
       - name: python-app
