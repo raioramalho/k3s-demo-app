@@ -15,22 +15,22 @@ spec:
         app: demo-app
     spec:
       # Pull secret para Artifact Registry
-      imagePullSecrets:
-      - name: artifact-registry-secret
+      # imagePullSecrets:
+      # - name: artifact-registry-secret
       
       containers:
       - name: demo-app
-        image: southamerica-east1-docker.pkg.dev/offshore-hub-foundations/offshore-hub-repo/python-app:latest
+        image: nginx:latest
         imagePullPolicy: always
         
         ports:
         - name: http
-          containerPort: 8080
+          containerPort: 80
           protocol: TCP
         
-        env:
-        - name: PORT
-          value: "8080"
+        # env:
+        # - name: PORT
+        #   value: "8080"
         
         # Resource limits (importante para K3s offshore)
         resources:
@@ -45,7 +45,7 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: 8080
+            port: 80
           initialDelaySeconds: 10
           periodSeconds: 30
           timeoutSeconds: 5
@@ -54,7 +54,7 @@ spec:
         readinessProbe:
           httpGet:
             path: /ready
-            port: 8080
+            port: 80
           initialDelaySeconds: 5
           periodSeconds: 10
           timeoutSeconds: 3
