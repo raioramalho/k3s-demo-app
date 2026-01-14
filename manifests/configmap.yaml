@@ -1,0 +1,233 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-app-html
+  labels:
+    app: demo-app
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>K3s Demo App 🚀</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: #fff;
+                overflow: hidden;
+            }
+            
+            .container {
+                text-align: center;
+                padding: 40px;
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+                border: 1px solid rgba(255, 255, 255, 0.18);
+                max-width: 800px;
+                animation: fadeIn 1s ease-in;
+            }
+            
+            h1 {
+                font-size: 3.5em;
+                margin-bottom: 20px;
+                text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+                animation: slideDown 0.8s ease-out;
+            }
+            
+            .emoji {
+                font-size: 5em;
+                display: inline-block;
+                animation: bounce 2s infinite;
+            }
+            
+            p {
+                font-size: 1.3em;
+                margin: 20px 0;
+                line-height: 1.6;
+            }
+            
+            .info-box {
+                background: rgba(255, 255, 255, 0.2);
+                padding: 20px;
+                border-radius: 15px;
+                margin: 30px 0;
+                backdrop-filter: blur(5px);
+            }
+            
+            .info-box h2 {
+                margin-bottom: 15px;
+                font-size: 1.8em;
+            }
+            
+            .tech-stack {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                flex-wrap: wrap;
+                margin-top: 20px;
+            }
+            
+            .tech-item {
+                background: rgba(255, 255, 255, 0.3);
+                padding: 15px 25px;
+                border-radius: 10px;
+                font-weight: bold;
+                transition: transform 0.3s ease, background 0.3s ease;
+                cursor: pointer;
+            }
+            
+            .tech-item:hover {
+                transform: translateY(-5px) scale(1.05);
+                background: rgba(255, 255, 255, 0.4);
+            }
+            
+            .pulse {
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: #4ade80;
+                display: inline-block;
+                animation: pulse 2s infinite;
+                margin-right: 10px;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            @keyframes slideDown {
+                from {
+                    transform: translateY(-50px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes bounce {
+                0%, 20%, 50%, 80%, 100% {
+                    transform: translateY(0);
+                }
+                40% {
+                    transform: translateY(-20px);
+                }
+                60% {
+                    transform: translateY(-10px);
+                }
+            }
+            
+            @keyframes pulse {
+                0% {
+                    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+                }
+                70% {
+                    box-shadow: 0 0 0 15px rgba(74, 222, 128, 0);
+                }
+                100% {
+                    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0);
+                }
+            }
+            
+            .particles {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                z-index: -1;
+            }
+            
+            .particle {
+                position: absolute;
+                width: 10px;
+                height: 10px;
+                background: rgba(255, 255, 255, 0.5);
+                border-radius: 50%;
+                animation: float 15s infinite;
+            }
+            
+            @keyframes float {
+                0% {
+                    transform: translateY(100vh) rotate(0deg);
+                    opacity: 0;
+                }
+                10% {
+                    opacity: 1;
+                }
+                90% {
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateY(-100vh) rotate(720deg);
+                    opacity: 0;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="particles" id="particles"></div>
+        
+        <div class="container">
+            <div class="emoji">🚀</div>
+            <h1>K3s Demo App</h1>
+            
+            <p>
+                <span class="pulse"></span>
+                Aplicação rodando com sucesso!
+            </p>
+            
+            <div class="info-box">
+                <h2>✨ Stack Tecnológica</h2>
+                <div class="tech-stack">
+                    <div class="tech-item">🐳 Docker</div>
+                    <div class="tech-item">☸️ Kubernetes</div>
+                    <div class="tech-item">🎯 K3s</div>
+                    <div class="tech-item">🌐 Nginx</div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h2>📊 Informações</h2>
+                <p>Ambiente: <strong>Development</strong></p>
+                <p>Replicas: <strong>3</strong></p>
+                <p>NodePort: <strong>30080</strong></p>
+            </div>
+            
+            <p style="margin-top: 30px; font-size: 1.1em;">
+                💡 Deploy realizado com sucesso no cluster K3s!
+            </p>
+        </div>
+        
+        <script>
+            // Criar partículas flutuantes
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        </script>
+    </body>
+    </html>

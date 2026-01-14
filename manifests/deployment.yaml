@@ -23,6 +23,11 @@ spec:
           containerPort: 80
           protocol: TCP
         
+        volumeMounts:
+        - name: html-content
+          mountPath: /usr/share/nginx/html
+          readOnly: true
+        
         resources:
           requests:
             memory: "32Mi"
@@ -30,3 +35,8 @@ spec:
           limits:
             memory: "64Mi"
             cpu: "200m"
+      
+      volumes:
+      - name: html-content
+        configMap:
+          name: demo-app-html
