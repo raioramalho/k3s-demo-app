@@ -2,8 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: demo-app
+  namespace: default
   labels:
     app: demo-app
+    environment: production
 spec:
   replicas: 1
   selector:
@@ -13,6 +15,7 @@ spec:
     metadata:
       labels:
         app: demo-app
+        environment: production
     spec:
       containers:
       - name: nginx

@@ -1,0 +1,41 @@
+---
+# ValidatingAdmissionPolicy para obrigar labels no namespace default
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: require-labels-default-namespace
+spec:
+  failurePolicy: fail
+  scope: Namespaced
+  rules:
+  - apiGroups:
+    - ""
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - pods
+    scope: "Namespaced"
+  matchConditions:
+  - name: "is-default-namespace"
+    expression: "object.metadata.namespace == 'default'"
+  validations:
+  - expression: "object.metadata.labels != null && 'app' in object.metadata.labels"
+    message: "Pods no namespace 'default' DEVEM ter o label 'app' definido"
+  - expression: "object.metadata.labels != null && 'environment' in object.metadata.labels"
+    message: "Pods no namespace 'default' DEVEM ter o label 'environment' definido"
+
+---
+# ValidatingAdmissionPolicyBinding para aplicar a política
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: require-labels-default-namespace-binding
+spec:
+  policyName: require-labels-default-namespace
+  validationActions:
+  - deny
+  paramRef:
+    name: require-labels-default-namespace-params

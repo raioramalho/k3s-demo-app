@@ -1,0 +1,68 @@
+---
+# Política de LabelSelector para o namespace default
+apiVersion: apiserver.config.k8s.io/v1
+kind: AdmissionConfiguration
+plugins:
+- name: PodSecurityPolicy
+  configuration:
+    apiVersion: apiserver.config.k8s.io/v1
+    kind: PodSecurityPolicyAdmissionConfig
+    enforcement:
+    - level: baseline
+      runtimes:
+      - '*'
+
+---
+# ResourceQuota para garantir labels obrigatórios no namespace default
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: default-namespace-quota
+  namespace: default
+  labels:
+    namespace: default
+spec:
+  scopeSelector:
+    matchExpressions:
+    - operator: In
+      scopeName: PriorityClass
+      values: ["system-cluster-critical", "system-node-critical"]
+  hard:
+    requests.cpu: "10"
+    requests.memory: "20Gi"
+    limits.cpu: "20"
+    limits.memory: "40Gi"
+    pods: "100"
+
+---
+# NetworkPolicy para namespace default - restrição de tráfego
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-namespace-policy
+  namespace: default
+  labels:
+    namespace: default
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: demo-app
+    ports:
+    - protocol: TCP
+      port: 80
+  egress:
+  - to:
+    - podSelector: {}
+    ports:
+    - protocol: TCP
+      port: 53
+    - protocol: UDP
+      port: 53
+  - to:
+    - namespaceSelector: {}
