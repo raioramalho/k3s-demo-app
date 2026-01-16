@@ -1,41 +1,40 @@
 ---
-# ValidatingAdmissionPolicy para obrigar labels no namespace default
+# ValidatingAdmissionPolicy para proibir Deployments no namespace default
 apiVersion: admissionregistration.k8s.io/v1alpha1
 kind: ValidatingAdmissionPolicy
 metadata:
-  name: require-labels-default-namespace
+  name: deny-deployments-default-namespace
 spec:
   failurePolicy: fail
   scope: Namespaced
   rules:
   - apiGroups:
-    - ""
+    - "apps"
     apiVersions:
     - v1
     operations:
     - CREATE
     - UPDATE
     resources:
-    - pods
+    - deployments
+    - statefulsets
+    - daemonsets
+    - replicasets
     scope: "Namespaced"
   matchConditions:
   - name: "is-default-namespace"
     expression: "object.metadata.namespace == 'default'"
   validations:
-  - expression: "object.metadata.labels != null && 'app' in object.metadata.labels"
-    message: "Pods no namespace 'default' DEVEM ter o label 'app' definido"
-  - expression: "object.metadata.labels != null && 'environment' in object.metadata.labels"
-    message: "Pods no namespace 'default' DEVEM ter o label 'environment' definido"
+  - expression: "false"
+    message: "NÃO é permitido fazer deploy de aplicações no namespace 'default'. Use um namespace dedicado."
 
 ---
-# ValidatingAdmissionPolicyBinding para aplicar a política
+# ValidatingAdmissionPolicyBinding para aplicar a política de rejeição
 apiVersion: admissionregistration.k8s.io/v1alpha1
 kind: ValidatingAdmissionPolicyBinding
 metadata:
-  name: require-labels-default-namespace-binding
+  name: deny-deployments-default-namespace-binding
 spec:
-  policyName: require-labels-default-namespace
+  policyName: deny-deployments-default-namespace
   validationActions:
   - deny
-  paramRef:
-    name: require-labels-default-namespace-params
