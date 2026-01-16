@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: demo-app
+  name: root-sync-teste
   labels:
-    app: demo-app
+    app: root-sync-teste
     environment: production
