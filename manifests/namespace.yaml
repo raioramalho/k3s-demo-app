@@ -1,3 +1,19 @@
+---
+# Namespace para Edge 1
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: teste-2
+  labels:
+    app: teste-2
+    environment: production
+    cluster: k3s-tenant-edge-1
+  annotations:
+    description: "Namespace para testes de root-sync no Edge 1"
+    cluster-region: "edge-1"
+
+---
+# Namespace para Edge 2
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -5,3 +21,7 @@ metadata:
   labels:
     app: root-sync-teste
     environment: production
+    cluster: k3s-tenant-edge-2
+  annotations:
+    description: "Namespace para testes de root-sync no Edge 2"
+    cluster-region: "edge-2"
