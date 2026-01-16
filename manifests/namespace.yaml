@@ -7,10 +7,10 @@ metadata:
   labels:
     app: teste-2
     environment: production
-    cluster: k3s-tenant-edge-1
+    cluster: edge-1
   annotations:
     description: "Namespace para testes de root-sync no Edge 1"
-    cluster-region: "edge-1"
+    cluster-region: "global"
 
 ---
 # Namespace para Edge 2
@@ -21,7 +21,7 @@ metadata:
   labels:
     app: root-sync-teste
     environment: production
-    cluster: k3s-tenant-edge-2
+    cluster: edge-2
   annotations:
     description: "Namespace para testes de root-sync no Edge 2"
-    cluster-region: "edge-2"
+    cluster-region: "global"
