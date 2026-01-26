@@ -1,4 +1,107 @@
 ---
+# ConfigMap com HTML e Tailwind CSS
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-html
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Contador de Clicks - K3s Demo</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center">
+      <div class="container mx-auto px-4">
+        <div class="max-w-md mx-auto bg-white rounded-2xl shadow-2xl p-8 space-y-8">
+          <!-- Header -->
+          <div class="text-center space-y-2">
+            <h1 class="text-4xl font-bold text-gray-800">Contador</h1>
+            <p class="text-gray-500">K3s Demo App</p>
+          </div>
+
+          <!-- Badge -->
+          <div class="flex justify-center">
+            <span class="bg-indigo-100 text-indigo-800 text-sm font-semibold px-4 py-2 rounded-full">
+              Clique para contar
+            </span>
+          </div>
+
+          <!-- Counter Display -->
+          <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl p-8 text-center">
+            <p class="text-white text-sm font-medium mb-2">Total de Clicks</p>
+            <p id="counter" class="text-6xl font-bold text-white">0</p>
+          </div>
+
+          <!-- Button -->
+          <button
+            onclick="incrementCounter()"
+            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl transition duration-200 transform hover:scale-105 active:scale-95 shadow-lg"
+          >
+            Clique Aqui
+          </button>
+
+          <!-- Reset Button -->
+          <button
+            onclick="resetCounter()"
+            class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 rounded-xl transition duration-200"
+          >
+            Resetar
+          </button>
+
+          <!-- Stats -->
+          <div class="grid grid-cols-2 gap-4 pt-6 border-t border-gray-200">
+            <div class="text-center">
+              <p class="text-2xl font-bold text-indigo-600" id="maxClicks">0</p>
+              <p class="text-sm text-gray-500">Máximo</p>
+            </div>
+            <div class="text-center">
+              <p class="text-2xl font-bold text-indigo-600" id="sessionTime">0s</p>
+              <p class="text-sm text-gray-500">Sessão</p>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="text-center text-xs text-gray-400 pt-4">
+            <p>Rodando em K3s ☸️</p>
+          </div>
+        </div>
+      </div>
+
+      <script>
+        let clickCount = 0;
+        let maxClicks = 0;
+        const startTime = Date.now();
+
+        function incrementCounter() {
+          clickCount++;
+          maxClicks = Math.max(maxClicks, clickCount);
+          document.getElementById('counter').textContent = clickCount;
+          document.getElementById('maxClicks').textContent = maxClicks;
+          updateSessionTime();
+        }
+
+        function resetCounter() {
+          clickCount = 0;
+          document.getElementById('counter').textContent = clickCount;
+          updateSessionTime();
+        }
+
+        function updateSessionTime() {
+          const elapsed = Math.floor((Date.now() - startTime) / 1000);
+          document.getElementById('sessionTime').textContent = elapsed + 's';
+        }
+
+        // Update session time every second
+        setInterval(updateSessionTime, 1000);
+      </script>
+    </body>
+    </html>
+
+---
 # Deployment do nginx
 apiVersion: apps/v1
 kind: Deployment
@@ -31,6 +134,15 @@ spec:
           limits:
             cpu: 500m
             memory: 256Mi
+        
+        volumeMounts:
+        - name: html-volume
+          mountPath: /usr/share/nginx/html
+
+      volumes:
+      - name: html-volume
+        configMap:
+          name: nginx-html
 
 ---
 # Service LoadBalancer
