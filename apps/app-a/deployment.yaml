@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-app-a
+  namespace: app-a
+  labels:
+    app: nginx-app-a
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-app-a
+  template:
+    metadata:
+      labels:
+        app: nginx-app-a
+    spec:
+      containers:
+        - name: nginx
+          image: southamerica-east1-docker.pkg.dev/fleet-orchestrator/forch-images/nginx-app-a:v1
+          ports:
+            - containerPort: 80
