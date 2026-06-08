@@ -9,7 +9,7 @@ data:
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Contador de Clicks - K3s Demo</title>
+      <title>Contador de Clicks - K3s Demo [forch-sync-v2]</title>
       <script src="https://cdn.tailwindcss.com"></script>
     </head>
     <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen flex items-center justify-center">
