@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: southamerica-east1-docker.pkg.dev/fleet-orchestrator/forch-images/nginx-app-a:v1
+          image: southamerica-east1-docker.pkg.dev/fleet-orchestrator/forch-images/nginx-app-a:v2
           ports:
             - containerPort: 80
