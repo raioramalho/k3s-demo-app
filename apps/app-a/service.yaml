@@ -4,6 +4,7 @@ metadata:
   name: nginx-app-a
   namespace: app-a
 spec:
+  type: LoadBalancer
   selector:
     app: nginx-app-a
   ports:
